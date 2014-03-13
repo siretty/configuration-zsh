@@ -1,7 +1,15 @@
-alias ls='ls --color=auto'
+# loading dircolors for ls
+if [ -f $HOME/.dircolors.ansi-universial ] ; then
+    eval `dircolors $HOME/.dircolors.ansi-universial`
+fi
 
-[ -f $HOME/.dircolors.ansi-universial ] && eval $(dircolors $HOME/.dircolors.ansi-universial)
+# set locales if not set
+if [ -z "$LANG" ] ; then
+    export LANG=en_GB.UTF-8
+fi
 
-export PATH="$HOME/app:$HOME/.gem/ruby/2.0.0/bin:$PATH"
+# environment variables
 export EDITOR="vim"
 
+# usefull aliases
+alias ls='ls --color=auto'

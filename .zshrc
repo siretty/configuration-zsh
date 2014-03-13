@@ -1,4 +1,4 @@
-source ~/.shrc_common
+[ -f ~/.shrc_common ] && source ~/.shrc_common
 
 # load math functions
 zmodload zsh/mathfunc
