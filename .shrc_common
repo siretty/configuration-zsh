@@ -1,0 +1,7 @@
+alias ls='ls --color=auto'
+
+[ -f $HOME/.dircolors.ansi-universial ] && eval $(dircolors $HOME/.dircolors.ansi-universial)
+
+export PATH="$HOME/app:$HOME/.gem/ruby/2.0.0/bin:$PATH"
+export EDITOR="vim"
+
