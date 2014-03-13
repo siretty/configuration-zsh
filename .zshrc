@@ -88,7 +88,7 @@ function prompt_vcs {
 function prompt_vcs_git {
   # vcsh provides a "vitual" git repository, this interferes with the prompt
   if [ -n "${VCSH_REPO_NAME}" ] ; then
-    echo -n " %F{red}[vcsh]%f%k"
+    echo -n " %F{magenta}[vcsh:${VCSH_REPO_NAME}]%f%k"
     return 
   fi
 
