@@ -65,6 +65,9 @@ bindkey $keys[End] end-of-line $keys[EndAlt] end-of-line
 # zstyle :compinstall filename '/home/daniel/.zshrc'
 zstyle ':completion:*' menu select
 
+# completion for ".."
+zstyle ':completion:*' special-dirs true
+
 #zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 zstyle ':completion:*:warnings' format '%Bsorry, no matches for: %d%b'
 
