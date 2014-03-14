@@ -23,3 +23,20 @@ export EDITOR="vim"
 
 # usefull aliases
 alias ls='ls --color=auto'
+
+# start gpg-agent
+if [ "$EUID" -ne "0" ] ; then
+    envfile="$HOME/.gpg-agent-info"
+    if pgrep -x -u "$USER" gpg-agent >/dev/null 2>&1 ; then
+        eval `cat "$envfile"`
+        eval `cut -d= -f1 "$envfile" | xargs echo export`
+    else
+        # if pagsh is available _and_ the afs module is loaded
+        if [ -f /usr/bin/pagsh ] && [ -n "`lsmod | grep openafs`" ] ; then
+            eval `/usr/bin/pagsh -c "aklog ; gpg-agent -s --daemon --write-env-file \"$envfile\""`
+        else
+            eval `gpg-agent -s --daemon --write-env-file "$envfile"`
+        fi
+    fi
+fi
+
