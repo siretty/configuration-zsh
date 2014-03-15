@@ -33,7 +33,13 @@ if [ "$EUID" -ne "0" ] ; then
     else
         # if pagsh is available _and_ the afs module is loaded
         if [ -f /usr/bin/pagsh ] && [ -n "`lsmod | grep openafs`" ] ; then
-            eval `/usr/bin/pagsh -c "aklog ; gpg-agent -s --daemon --write-env-file \"$envfile\""`
+            # if the kreauth tool is available
+            if [ -f /usr/bin/kreauth ] ; then
+                cmd='aklog ; gpg-agent -s --daemon --write-env-file '$envfile' && kreauth --daemonize --wait-for-pid `sed -n '"'"'s/^SSH_AGENT_PID=\([0-9]\+\)$/\1/p'"'"' '$envfile'`'
+                eval `/usr/bin/pagsh -c $cmd`
+            else
+                eval `/usr/bin/pagsh -c "aklog ; gpg-agent -s --daemon --write-env-file \"$envfile\""`
+            fi
         else
             eval `gpg-agent -s --daemon --write-env-file "$envfile"`
         fi
