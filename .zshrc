@@ -19,44 +19,40 @@ autoload -U colors && colors
 
 ###
 # keys
-bindkey -e
-
 typeset -A keys
-if [[ "$TERM" =~ ".*screen.*" ]] ; then
-  keys[Insert]='^[[2~';
-  keys[Delete]='^[[3~';
-  keys[Home]='^[[1~'
-  keys[HomeAlt]='^[[1~'
-  keys[End]='^[[4~'
-  keys[EndAlt]='^[[4~'
 
-  keys[Up]='^[[A';    keys[C_Up]='^[[1;5A';
-  keys[Down]='^[[B';  keys[C_Down]='^[[1;5B';
-  keys[Right]='^[[C'; keys[C_Right]='^[[1;5C';
-  keys[Left]='^[[D';  keys[C_Left]='^[[1;5D';
-fi
-if [[ "$TERM" =~ ".*xterm.*" ]] ; then
-  keys[Insert]='^[[2~';
-  keys[Delete]='^[[3~';
-  keys[Home]='^[OH';
-  keys[HomeAlt]='^[[H';
-  keys[End]='^[OF';
-  keys[EndAlt]='^[[F';
+zmodload zsh/terminfo
 
-  keys[Up]='^[[A';    keys[C_Up]='^[[1;5A';
-  keys[Down]='^[[B';  keys[C_Down]='^[[1;5B';
-  keys[Right]='^[[C'; keys[C_Right]='^[[1;5C';
-  keys[Left]='^[[D';  keys[C_Left]='^[[1;5D';
-fi
+# loading key codes from terminfo
+keys[PageUp]=$terminfo[kpp]
+keys[PageDown]=$terminfo[knp]
 
-bindkey $keys[Up]       up-line-or-history
-bindkey $keys[Down]     down-line-or-history
-bindkey $keys[Insert]   overwrite-mode
-bindkey $keys[Delete]   delete-char
-bindkey $keys[C_Left]   emacs-backward-word
-bindkey $keys[C_Right]  emacs-forward-word
-bindkey $keys[Home] beginning-of-line $keys[HomeAlt] beginning-of-line
-bindkey $keys[End] end-of-line $keys[EndAlt] end-of-line
+bindkey '\e[1;5D'           emacs-backward-word
+bindkey '\e[1;5C'           emacs-forward-word
+
+bindkey '\e[2~'             overwrite-mode
+bindkey '\e[4h'             overwrite-mode
+bindkey "$terminfo[kich1]"  overwrite-mode
+
+bindkey '\e[3~'             delete-char
+bindkey '\e[P'              delete-char
+bindkey "$terminfo[kdch1]"  delete-char
+
+bindkey '^Y'                up-line-or-history
+bindkey '\e[A'              up-line-or-history
+bindkey "$terminfo[kcuu1]"  up-line-or-history
+
+bindkey '^E'                down-line-or-history
+bindkey '\e[B'              down-line-or-history
+bindkey "$terminfo[kcud1]"  down-line-or-history
+
+bindkey '\eOH'              beginning-of-line
+bindkey '\e[H'              beginning-of-line
+bindkey "$terminfo[khome]"  beginning-of-line
+
+bindkey '\eOF'              end-of-line
+bindkey '\e[F'              end-of-line
+bindkey "$terminfo[kend]"   end-of-line
 
 
 ###
@@ -174,7 +170,7 @@ function prompt_bat {
 setopt promptsubst
 setopt promptpercent
 
-export PROMPT='┌ %F{green}%n%f%B@%b%F{yellow}%m%f %F{cyan}%2~%f$(prompt_vcs)$(prompt_bat)
+export PROMPT='┌ %F{green}%n%f%B@%b%F{yellow}%m%f %F{cyan}%2~%f$(prompt_bat)$(prompt_vcs)
 └ %B%#%b '
 
 export RPROMPT=''

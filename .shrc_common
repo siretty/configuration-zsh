@@ -3,6 +3,13 @@ if [ -f $HOME/.dircolors.ansi-universial ] ; then
     eval `dircolors $HOME/.dircolors.ansi-universial`
 fi
 
+if [ -d $HOME/app ] ; then
+    export PATH="$HOME/app:$PATH"
+    if [ -d $HOME/app/bin ] ; then
+        export PATH="$HOME/app/bin:$PATH"
+    fi
+fi
+
 # modify TERM variable for colors
 case "$TERM" in
     xterm )
