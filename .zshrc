@@ -16,6 +16,13 @@ unsetopt list_beep  # no bell on ambigous completion
 # load color support
 autoload -U colors && colors
 
+###
+# terminal title
+case $TERM in
+    (xterm|st)*)
+        precmd () { print -Pn "\e]0;%n@%m: %~\a" }
+        ;;
+esac
 
 ###
 # keys
@@ -27,6 +34,7 @@ zmodload zsh/terminfo
 keys[PageUp]=$terminfo[kpp]
 keys[PageDown]=$terminfo[knp]
 
+# binding common key codes and codes from terminfo
 bindkey '\e[1;5D'           emacs-backward-word
 bindkey '\e[1;5C'           emacs-forward-word
 
